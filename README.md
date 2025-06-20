@@ -30,25 +30,6 @@
 - **ament_cmake** - Build system
 - **ament_cmake_gtest** - Testing framework
 
-## 📦 Cài đặt
-
-### 1. Clone repository:
-```bash
-cd ~/ros2_ws/src
-git clone https://github.com/your-org/rtc_nodecore.git
-```
-
-### 2. Cài đặt dependencies:
-```bash
-cd ~/ros2_ws
-rosdep install --from-paths src --ignore-src -r -y
-```
-
-### 3. Build package:
-```bash
-colcon build --packages-select rtc_nodecore
-source install/setup.bash
-```
 
 ## 🎯 Cách sử dụng cơ bản
 
