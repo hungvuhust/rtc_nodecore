@@ -34,7 +34,7 @@ class RTCAGVDemo(Node):
         # QoS profiles
         qos_reliable = QoSProfile(
             reliability=ReliabilityPolicy.RELIABLE,
-            durability=DurabilityPolicy.TRANSIENT_LOCAL,
+            # durability=DurabilityPolicy.TRANSIENT_LOCAL,
             depth=10
         )
 

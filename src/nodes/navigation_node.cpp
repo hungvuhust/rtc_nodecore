@@ -28,12 +28,9 @@ public:
       : rclcpp::Node("rtc_navigation_node"), rtcrobot_core::NodeCore(
                                                  "navigation") // Slave node
         ,
-        gen_(rd_()), dis_x_(8.0, 12.0) // Random X position 8-12m
-        ,
-        dis_y_(18.0, 22.0) // Random Y position 18-22m
-        ,
-        dis_theta_(-3.14, 3.14) // Random orientation
-        ,
+        gen_(rd_()), dis_x_(8.0, 12.0), // Random X position 8-12m
+        dis_y_(18.0, 22.0),             // Random Y position 18-22m
+        dis_theta_(-3.14, 3.14),        // Random orientation
         current_x_(10.0), current_y_(20.0), current_theta_(0.0) {
     RCLCPP_INFO(this->get_logger(), "Initializing Navigation Node...");
 
