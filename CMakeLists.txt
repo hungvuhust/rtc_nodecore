@@ -52,6 +52,27 @@ add_executable(${PROJECT_NAME}_example
 target_link_libraries(${PROJECT_NAME}_example ${PROJECT_NAME}_lib)
 ament_target_dependencies(${PROJECT_NAME}_example ${THIS_PACKAGES_DEPENDENCIES})
 
+# ROS2 Nodes
+# Master Node
+add_executable(rtc_master_node src/nodes/master_node.cpp)
+target_link_libraries(rtc_master_node ${PROJECT_NAME}_lib)
+ament_target_dependencies(rtc_master_node ${THIS_PACKAGES_DEPENDENCIES})
+
+# Navigation Node
+add_executable(rtc_navigation_node src/nodes/navigation_node.cpp)
+target_link_libraries(rtc_navigation_node ${PROJECT_NAME}_lib)
+ament_target_dependencies(rtc_navigation_node ${THIS_PACKAGES_DEPENDENCIES})
+
+# Battery Node
+add_executable(rtc_battery_node src/nodes/battery_node.cpp)
+target_link_libraries(rtc_battery_node ${PROJECT_NAME}_lib)
+ament_target_dependencies(rtc_battery_node ${THIS_PACKAGES_DEPENDENCIES})
+
+# Safety Node
+add_executable(rtc_safety_node src/nodes/safety_node.cpp)
+target_link_libraries(rtc_safety_node ${PROJECT_NAME}_lib)
+ament_target_dependencies(rtc_safety_node ${THIS_PACKAGES_DEPENDENCIES})
+
 install(TARGETS
   ${PROJECT_NAME}_lib
   DESTINATION lib
@@ -60,11 +81,27 @@ install(TARGETS
 install(TARGETS
   ${PROJECT_NAME}
   ${PROJECT_NAME}_example
+  rtc_master_node
+  rtc_navigation_node
+  rtc_battery_node
+  rtc_safety_node
   DESTINATION lib/${PROJECT_NAME}
 )
 
 install(DIRECTORY include/
   DESTINATION include
+)
+
+# Install launch files
+install(DIRECTORY launch/
+  DESTINATION share/${PROJECT_NAME}/launch
+  FILES_MATCHING PATTERN "*.py"
+)
+
+# Install scripts
+install(PROGRAMS
+  scripts/demo_rtc_agv.py
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 # Testing
