@@ -14,6 +14,7 @@
 
 #include "rtc_nodecore/message.hpp"
 #include "rtc_nodecore/node_core.hpp"
+#include "rtc_nodecore/signal_handler.hpp"
 #include <bond/msg/status.hpp>
 #include <chrono>
 #include <memory>
@@ -194,15 +195,13 @@ int main(int argc, char **argv) {
 
   auto master_node = std::make_shared<MasterNode>();
 
-  RCLCPP_INFO(master_node->get_logger(), "Master Node started, spinning...");
+  RCLCPP_INFO(master_node->get_logger(), "🚀 Master Node started!");
 
-  try {
-    rclcpp::spin(master_node);
-  } catch (const std::exception &e) {
-    RCLCPP_ERROR(master_node->get_logger(), "Exception in master node: %s",
-                 e.what());
-  }
+  // Use SignalHandler for graceful shutdown
+  auto &signal_handler = rtcrobot_core::SignalHandler::getInstance();
+  int   exit_code      = signal_handler.spinWithSignalHandling(master_node);
 
+  RCLCPP_INFO(master_node->get_logger(), "🏁 Master Node shutdown complete");
   rclcpp::shutdown();
-  return 0;
+  return exit_code;
 }

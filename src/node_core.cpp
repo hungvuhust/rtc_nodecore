@@ -316,7 +316,7 @@ void NodeCore::releaseError(const std::string &error_type) {
 
   publishState(current_state_);
 
-  std::cout << "[NodeCore] Error released: " << error_type << std::endl;
+  std::cout << "[NodeCore] Released error: " << error_type << std::endl;
 }
 
 void NodeCore::releaseAllErrors() {

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "rtc_nodecore/node_core.hpp"
+#include "rtc_nodecore/signal_handler.hpp"
 #include <chrono>
 #include <memory>
 #include <random>
@@ -259,15 +260,13 @@ int main(int argc, char **argv) {
 
   auto battery_node = std::make_shared<BatteryNode>();
 
-  RCLCPP_INFO(battery_node->get_logger(), "Battery Node started, spinning...");
+  RCLCPP_INFO(battery_node->get_logger(), "🔋 Battery Node started!");
 
-  try {
-    rclcpp::spin(battery_node);
-  } catch (const std::exception &e) {
-    RCLCPP_ERROR(battery_node->get_logger(), "Exception in battery node: %s",
-                 e.what());
-  }
+  // Use SignalHandler for graceful shutdown
+  auto &signal_handler = rtcrobot_core::SignalHandler::getInstance();
+  int   exit_code      = signal_handler.spinWithSignalHandling(battery_node);
 
+  RCLCPP_INFO(battery_node->get_logger(), "🏁 Battery Node shutdown complete");
   rclcpp::shutdown();
-  return 0;
+  return exit_code;
 }

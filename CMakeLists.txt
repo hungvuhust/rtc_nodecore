@@ -35,6 +35,7 @@ include_directories(
 
 add_library(${PROJECT_NAME}_lib SHARED
   src/node_core.cpp
+  src/signal_handler.cpp
 )
 target_link_libraries(${PROJECT_NAME}_lib ${Boost_LIBRARIES})
 ament_target_dependencies(${PROJECT_NAME}_lib ${THIS_PACKAGES_DEPENDENCIES})

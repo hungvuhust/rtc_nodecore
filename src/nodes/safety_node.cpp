@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "rtc_nodecore/node_core.hpp"
+#include "rtc_nodecore/signal_handler.hpp"
 #include <chrono>
 #include <geometry_msgs/msg/twist.hpp>
 #include <memory>
@@ -330,15 +331,13 @@ int main(int argc, char **argv) {
 
   auto safety_node = std::make_shared<SafetyNode>();
 
-  RCLCPP_INFO(safety_node->get_logger(), "Safety Node started, spinning...");
+  RCLCPP_INFO(safety_node->get_logger(), "🛡️ Safety Node started!");
 
-  try {
-    rclcpp::spin(safety_node);
-  } catch (const std::exception &e) {
-    RCLCPP_ERROR(safety_node->get_logger(), "Exception in safety node: %s",
-                 e.what());
-  }
+  // Use SignalHandler for graceful shutdown
+  auto &signal_handler = rtcrobot_core::SignalHandler::getInstance();
+  int   exit_code      = signal_handler.spinWithSignalHandling(safety_node);
 
+  RCLCPP_INFO(safety_node->get_logger(), "🏁 Safety Node shutdown complete");
   rclcpp::shutdown();
-  return 0;
+  return exit_code;
 }

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "rtc_nodecore/node_core.hpp"
+#include "rtc_nodecore/signal_handler.hpp"
 #include <chrono>
 #include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
 #include <geometry_msgs/msg/twist.hpp>
@@ -272,16 +273,14 @@ int main(int argc, char **argv) {
 
   auto navigation_node = std::make_shared<NavigationNode>();
 
+  RCLCPP_INFO(navigation_node->get_logger(), "🧭 Navigation Node started!");
+
+  // Use SignalHandler for graceful shutdown
+  auto &signal_handler = rtcrobot_core::SignalHandler::getInstance();
+  int   exit_code      = signal_handler.spinWithSignalHandling(navigation_node);
+
   RCLCPP_INFO(navigation_node->get_logger(),
-              "Navigation Node started, spinning...");
-
-  try {
-    rclcpp::spin(navigation_node);
-  } catch (const std::exception &e) {
-    RCLCPP_ERROR(navigation_node->get_logger(),
-                 "Exception in navigation node: %s", e.what());
-  }
-
+              "🏁 Navigation Node shutdown complete");
   rclcpp::shutdown();
-  return 0;
+  return exit_code;
 }
